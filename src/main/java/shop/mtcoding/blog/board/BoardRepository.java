@@ -10,8 +10,18 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class BoardNativeRepository {
+public class BoardRepository {
     private final EntityManager em;
+
+    @Transactional
+    public Board save(Board board) {
+        // 1. 비영속 객체
+        em.persist(board);
+        // 2. board -> 영속 객체
+        return board;
+    }
+
+
 
     @Transactional
     public void updateById(String title, String content, String username, Integer id) {
@@ -34,14 +44,7 @@ public class BoardNativeRepository {
         return query.getResultList();
     }
 
-    @Transactional
-    public void save(String title, String content, String username) {
-        Query query = em.createNativeQuery("insert into board_tb (title, content, username, created_at) values (?, ?, ?, now())");
-        query.setParameter(1, title);
-        query.setParameter(2, content);
-        query.setParameter(3, username);
-        query.executeUpdate();
-    }
+
 
     @Transactional
     public void deleteById(int id) {

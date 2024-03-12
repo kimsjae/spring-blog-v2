@@ -3,64 +3,61 @@ package shop.mtcoding.blog.board;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class BoardController {
-    private final BoardNativeRepository boardNativeRepository;
+    private final BoardRepository boardRepository;
+
+    @PostMapping("/board/save")
+    public String save(BoardRequest.SaveDTO requestDTO) {
+        boardRepository.save(requestDTO.toEntity());
+        return "redirect:/";
+    }
+
 
     @GetMapping("/board/{id}/update-form")
     public String updateForm(@PathVariable (name = "id") Integer id, HttpServletRequest request) {
-        Board board = boardNativeRepository.findById(id);
+        Board board = boardRepository.findById(id);
         request.setAttribute("board", board);
         return "board/update-form";
     }
 
-    @PostMapping("/board/{id}/update")
-    public String update(@PathVariable (name = "id") Integer id, String title, String content, String username) {
-        boardNativeRepository.updateById(title, content, username, id);
-        return "redirect:/board/" + id;
-    }
-
 //    @PostMapping("/board/{id}/update")
-//    public String update(@PathVariable(name = "id") Integer id, String title, String content, String username) {
-//        System.out.println("id : " + id);
-//        System.out.println("title : " + title);
-//        System.out.println("content : " + content);
-//        System.out.println("username : " + username);
+//    public String update(@PathVariable (name = "id") Integer id, String title, String content, String username) {
 //        boardNativeRepository.updateById(title, content, username, id);
-//
 //        return "redirect:/board/" + id;
 //    }
+
+    @PostMapping("/board/{id}/update")
+    public String update(@PathVariable(name = "id") Integer id, String title, String content, String username) {
+        System.out.println("id : " + id);
+        System.out.println("title : " + title);
+        System.out.println("content : " + content);
+        System.out.println("username : " + username);
+        boardRepository.updateById(title, content, username, id);
+
+        return "redirect:/board/" + id;
+    }
 
     // Post는 write요청 (action)
     @PostMapping("/board/{id}/delete")
     public String deleteById(@PathVariable (name = "id") Integer id) {
-        boardNativeRepository.deleteById(id);
+        boardRepository.deleteById(id);
         return "redirect:/";
     }
 
-    @PostMapping("/board/save")
-    public String save(String title, String content, String username) { // DTO 없이 받기
-//        System.out.println("username : " + username); // 출력해서 name값 잘 들어오는 지 확인해봐야함
-//        System.out.println("title : " + title); // 출력해서 name값 잘 들어오는 지 확인해봐야함
-//        System.out.println("content : " + content); // 출력해서 name값 잘 들어오는 지 확인해봐야함
-//        // 잘 들어옴
-        boardNativeRepository.save(title, content, username);
-        return "redirect:/";
-    }
+
 
     @GetMapping("/")
     public String index(HttpServletRequest request) {
 
-        List<Board> boardList = boardNativeRepository.findAll();
+        List<Board> boardList = boardRepository.findAll();
         request.setAttribute("boardList", boardList);
 
         return "index";
@@ -74,7 +71,7 @@ public class BoardController {
 
     @GetMapping("/board/{id}")
     public String detail(@PathVariable(name = "id") Integer id, HttpServletRequest request) {
-        Board board = boardNativeRepository.findById(id);
+        Board board = boardRepository.findById(id);
         request.setAttribute("board", board);
 
         return "board/detail";

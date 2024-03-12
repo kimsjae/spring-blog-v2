@@ -1,6 +1,5 @@
 package shop.mtcoding.blog.board;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -11,11 +10,11 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@Import(BoardNativeRepository.class)
-public class BoardNativeRepositoryTest {
+@Import(BoardRepository.class)
+public class BoardRepositoryTest {
 
     @Autowired // IoC에 있는 것을 D.I 해줌
-    private BoardNativeRepository boardNativeRepository;
+    private BoardRepository boardRepository;
 
     @Test
     public void updateById_test() {
@@ -26,10 +25,10 @@ public class BoardNativeRepositoryTest {
         Integer id = 1;
 
         // when
-        boardNativeRepository.updateById(title, content, username, id);
+        boardRepository.updateById(title, content, username, id);
 
         // then
-        Board board = boardNativeRepository.findById(id);
+        Board board = boardRepository.findById(id);
         System.out.println("updateById_test/board : " + board);
         assertThat(board.getTitle()).isEqualTo("제목수정1");
         assertThat(board.getContent()).isEqualTo("내용수정1");
@@ -42,10 +41,10 @@ public class BoardNativeRepositoryTest {
         int id = 1;
 
         // when
-        boardNativeRepository.deleteById(id);
+        boardRepository.deleteById(id);
 
         // then
-        List<Board> boardList = boardNativeRepository.findAll();
+        List<Board> boardList = boardRepository.findAll();
         assertThat(boardList.size()).isEqualTo(3);
     }
 
@@ -55,7 +54,7 @@ public class BoardNativeRepositoryTest {
         int id = 1;
 
         // when
-        Board board = boardNativeRepository.findById(id);
+        Board board = boardRepository.findById(id);
         System.out.println("findById_test : " + board);
 
         // then
@@ -69,7 +68,7 @@ public class BoardNativeRepositoryTest {
         // given
 
         // when
-        List<Board> boardList = boardNativeRepository.findAll();
+        List<Board> boardList = boardRepository.findAll();
 
         // then
         System.out.println("findAll_test/size : " + boardList.size());
