@@ -7,6 +7,17 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 public class DateTest {
+    @Test
+    public void timestampFormat() {
+        // given
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+
+        // when
+        String createdAt = MyDateUtil.timestampFormat(currentTimestamp);
+
+        // then
+        System.out.println("timestampFormat_test : " + createdAt);
+    }
 
     @Test
     public void format_test(){
