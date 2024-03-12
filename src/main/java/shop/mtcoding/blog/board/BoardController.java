@@ -23,22 +23,22 @@ public class BoardController {
         return "board/update-form";
     }
 
-    @PostMapping("/board/{id}/update")
-    public String update(@PathVariable (name = "id") Integer id, String title, String content, String username) {
-        boardNativeRepository.updateById(title, content, username, id);
-        return "redirect:/board/" + id;
-    }
-
 //    @PostMapping("/board/{id}/update")
-//    public String update(@PathVariable(name = "id") Integer id, String title, String content, String username) {
-//        System.out.println("id : " + id);
-//        System.out.println("title : " + title);
-//        System.out.println("content : " + content);
-//        System.out.println("username : " + username);
+//    public String update(@PathVariable (name = "id") Integer id, String title, String content, String username) {
 //        boardNativeRepository.updateById(title, content, username, id);
-//
 //        return "redirect:/board/" + id;
 //    }
+
+    @PostMapping("/board/{id}/update")
+    public String update(@PathVariable(name = "id") Integer id, String title, String content, String username) {
+        System.out.println("id : " + id);
+        System.out.println("title : " + title);
+        System.out.println("content : " + content);
+        System.out.println("username : " + username);
+        boardNativeRepository.updateById(title, content, username, id);
+
+        return "redirect:/board/" + id;
+    }
 
     // Post는 write요청 (action)
     @PostMapping("/board/{id}/delete")
