@@ -3,6 +3,7 @@ package shop.mtcoding.blog.board;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import shop.mtcoding.blog.util.MyDateUtil;
 
 import java.sql.Timestamp;
 
@@ -17,6 +18,10 @@ public class Board {
     private String content;
     private String username;
     private Timestamp createdAt;
+
+    public String getTime() {
+        return MyDateUtil.timestampFormat(createdAt);
+    }
 
 //    public void update(String title, String content) { // 이렇게 하는 게 의미있는 setter
 //        this.title = title;
