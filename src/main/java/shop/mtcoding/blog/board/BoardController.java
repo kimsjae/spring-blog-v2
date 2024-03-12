@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -14,6 +15,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardNativeRepository boardNativeRepository;
+
+    @PostMapping("/board/{id}/delete")
+    public String deleteById(@PathVariable (name = "id") Integer id) {
+        boardNativeRepository.deleteById(id);
+        return "redirect:/";
+    }
 
     @GetMapping("/")
     public String index(HttpServletRequest request) {
@@ -40,7 +47,10 @@ public class BoardController {
     }
 
     @GetMapping("/board/{id}")
-    public String detail(@PathVariable Integer id) {
+    public String detail(@PathVariable(name = "id") Integer id, HttpServletRequest request) {
+        Board board = boardNativeRepository.findById(id);
+        request.setAttribute("board", board);
+
         return "board/detail";
     } // Integer 쓰면 안 들어올 때 Null, int는 0. 랩퍼클래스는 Null과 비교할 수 있어서 Integer를 쓴다.
 }

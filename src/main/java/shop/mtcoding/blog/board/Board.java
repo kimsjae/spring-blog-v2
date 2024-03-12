@@ -3,13 +3,14 @@ package shop.mtcoding.blog.board;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import lombok.ToString;
 import shop.mtcoding.blog.util.MyDateUtil;
 
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "board_tb")
-@Getter // setter는 변경돼야 할 컬럼에만 거는 것.
+@Data // setter는 변경돼야 할 컬럼에만 거는 것.
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

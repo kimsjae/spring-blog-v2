@@ -8,12 +8,42 @@ import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DataJpaTest
 @Import(BoardNativeRepository.class)
 public class BoardNativeRepositoryTest {
 
     @Autowired // IoC에 있는 것을 D.I 해줌
     private BoardNativeRepository boardNativeRepository;
+
+    @Test
+    public void deleteById_test() {
+        // given
+        int id = 1;
+
+        // when
+        boardNativeRepository.deleteById(id);
+
+        // then
+        List<Board> boardList = boardNativeRepository.findAll();
+        assertThat(boardList.size()).isEqualTo(3);
+    }
+
+    @Test
+    public void findById_test() {
+        // given
+        int id = 1;
+
+        // when
+        Board board = boardNativeRepository.findById(id);
+        System.out.println("findById_test : " + board);
+
+        // then
+        // org.assertj.core.api
+        assertThat(board.getTitle()).isEqualTo("제목1");
+        assertThat(board.getContent()).isEqualTo("내용1");
+    }
 
     @Test
     public void findAll_test() {
@@ -27,8 +57,8 @@ public class BoardNativeRepositoryTest {
         System.out.println("findAll_test/username : " + boardList.get(2).getUsername());
 
         // org.assertj.core.api
-        Assertions.assertThat(boardList.size()).isEqualTo(4);
-        Assertions.assertThat(boardList.get(2).getUsername()).isEqualTo("ssar");
+        assertThat(boardList.size()).isEqualTo(4);
+        assertThat(boardList.get(2).getUsername()).isEqualTo("ssar");
     }
 
 }
