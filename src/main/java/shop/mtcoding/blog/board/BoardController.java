@@ -16,9 +16,44 @@ import java.util.List;
 public class BoardController {
     private final BoardNativeRepository boardNativeRepository;
 
+    @GetMapping("/board/{id}/update-form")
+    public String updateForm(@PathVariable (name = "id") Integer id, HttpServletRequest request) {
+        Board board = boardNativeRepository.findById(id);
+        request.setAttribute("board", board);
+        return "board/update-form";
+    }
+
+    @PostMapping("/board/{id}/update")
+    public String update(@PathVariable (name = "id") Integer id, String title, String content, String username) {
+        boardNativeRepository.updateById(title, content, username, id);
+        return "redirect:/board/" + id;
+    }
+
+//    @PostMapping("/board/{id}/update")
+//    public String update(@PathVariable(name = "id") Integer id, String title, String content, String username) {
+//        System.out.println("id : " + id);
+//        System.out.println("title : " + title);
+//        System.out.println("content : " + content);
+//        System.out.println("username : " + username);
+//        boardNativeRepository.updateById(title, content, username, id);
+//
+//        return "redirect:/board/" + id;
+//    }
+
+    // Post는 write요청 (action)
     @PostMapping("/board/{id}/delete")
     public String deleteById(@PathVariable (name = "id") Integer id) {
         boardNativeRepository.deleteById(id);
+        return "redirect:/";
+    }
+
+    @PostMapping("/board/save")
+    public String save(String title, String content, String username) { // DTO 없이 받기
+//        System.out.println("username : " + username); // 출력해서 name값 잘 들어오는 지 확인해봐야함
+//        System.out.println("title : " + title); // 출력해서 name값 잘 들어오는 지 확인해봐야함
+//        System.out.println("content : " + content); // 출력해서 name값 잘 들어오는 지 확인해봐야함
+//        // 잘 들어옴
+        boardNativeRepository.save(title, content, username);
         return "redirect:/";
     }
 
@@ -36,15 +71,6 @@ public class BoardController {
         return "board/save-form";
     }
 
-    @PostMapping("/board/save")
-    public String save(String title, String content, String username) { // DTO 없이 받기
-//        System.out.println("username : " + username); // 출력해서 name값 잘 들어오는 지 확인해봐야함
-//        System.out.println("title : " + title); // 출력해서 name값 잘 들어오는 지 확인해봐야함
-//        System.out.println("content : " + content); // 출력해서 name값 잘 들어오는 지 확인해봐야함
-//        // 잘 들어옴
-        boardNativeRepository.save(title, content, username);
-        return "redirect:/";
-    }
 
     @GetMapping("/board/{id}")
     public String detail(@PathVariable(name = "id") Integer id, HttpServletRequest request) {
