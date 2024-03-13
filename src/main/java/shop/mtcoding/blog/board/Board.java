@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
+import shop.mtcoding.blog.user.User;
 import shop.mtcoding.blog.util.MyDateUtil;
 
 import java.sql.Timestamp;
@@ -20,29 +21,12 @@ public class Board {
     private Integer id;
     private String title;
     private String content;
-    private String username;
+
+    // @JoinColumn(name = "user_id") // 직접 이름 지정
+    @ManyToOne // 연관관계로 보고 user_id로 만들어줌. user(변수명), _id(PK)
+    private User user;
 
     @CreationTimestamp // PC를 통해 컨텍스트 될 때 자동으로 날짜를 만들어줌. PC -> DB 날짜주입
     private Timestamp createdAt;
 
-    public void update(BoardRequest.UpdateDTO requestDTO) {
-        this.title = requestDTO.getTitle();
-        this.content = requestDTO.getContent();
-        this.username = requestDTO.getUsername();
-    }
-
-    public Board(String title, String content, String username) {
-        this.title = title;
-        this.content = content;
-        this.username = username;
-    }
-
-    public String getTime() {
-        return MyDateUtil.timestampFormat(createdAt);
-    }
-
-//    public void update(String title, String content) { // 이렇게 하는 게 의미있는 setter
-//        this.title = title;
-//        this.content = content;
-//    }
 }
