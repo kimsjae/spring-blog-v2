@@ -1,10 +1,7 @@
 package shop.mtcoding.blog.board;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import shop.mtcoding.blog.user.User;
 import shop.mtcoding.blog.util.MyDateUtil;
@@ -23,11 +20,18 @@ public class Board {
     private String content;
 
     // @JoinColumn(name = "user_id") // 직접 이름 지정
-    @ManyToOne // 연관관계로 보고 user_id로 만들어줌. user(변수명), _id(PK)
-    private User user;
+    @ManyToOne(fetch = FetchType.LAZY) // 연관관계로 보고 user_id로 만들어줌. user(변수명), _id(PK)
+    private User user; // ORM
 
     @CreationTimestamp // PC를 통해 컨텍스트 될 때 자동으로 날짜를 만들어줌. PC -> DB 날짜주입
     private Timestamp createdAt;
 
-
+    @Builder
+    public Board(Integer id, String title, String content, User user, Timestamp createdAt) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.user = user;
+        this.createdAt = createdAt;
+    }
 }

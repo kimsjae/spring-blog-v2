@@ -14,6 +14,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardController {
 
+    private final BoardRepository boardRepository;
+
 
     @PostMapping("/board/save")
     public String save() {
@@ -53,6 +55,8 @@ public class BoardController {
 
     @GetMapping("/board/{id}")
     public String detail(@PathVariable(name = "id") Integer id, HttpServletRequest request) {
+        Board board = boardRepository.findByIdJoinUser(id);
+        request.setAttribute("board", board);
         return "board/detail";
     } // Integer 쓰면 안 들어올 때 Null, int는 0. 랩퍼클래스는 Null과 비교할 수 있어서 Integer를 쓴다.
 }
