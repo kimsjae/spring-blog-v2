@@ -25,6 +25,12 @@ public class Board {
     @CreationTimestamp // PC를 통해 컨텍스트 될 때 자동으로 날짜를 만들어줌. PC -> DB 날짜주입
     private Timestamp createdAt;
 
+    public void update(BoardRequest.UpdateDTO requestDTO) {
+        this.title = requestDTO.getTitle();
+        this.content = requestDTO.getContent();
+        this.username = requestDTO.getUsername();
+    }
+
     public Board(String title, String content, String username) {
         this.title = title;
         this.content = content;

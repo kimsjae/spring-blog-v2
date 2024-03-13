@@ -3,6 +3,7 @@ package shop.mtcoding.blog.board;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,12 +36,8 @@ public class BoardController {
 //    }
 
     @PostMapping("/board/{id}/update")
-    public String update(@PathVariable(name = "id") Integer id, String title, String content, String username) {
-        System.out.println("id : " + id);
-        System.out.println("title : " + title);
-        System.out.println("content : " + content);
-        System.out.println("username : " + username);
-        boardRepository.updateById(title, content, username, id);
+    public String update(@PathVariable(name = "id") Integer id, BoardRequest.UpdateDTO requestDTO) {
+        boardRepository.updateById(id, requestDTO);
 
         return "redirect:/board/" + id;
     }

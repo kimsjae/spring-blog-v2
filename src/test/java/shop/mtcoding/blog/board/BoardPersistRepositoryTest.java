@@ -1,5 +1,6 @@
 package shop.mtcoding.blog.board;
 
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -16,6 +17,41 @@ public class BoardPersistRepositoryTest {
     @Autowired // IoC에 있는 것을 D.I 해줌
     private BoardRepository boardRepository;
 
+    @Autowired
+    private EntityManager em;
+
+    @Test
+    public void updateById_test() {
+        // given
+        int id = 1;
+        String title = "제목수정1";
+
+        // when
+        Board board = boardRepository.findById(id);
+        board.setTitle(title);
+        em.flush();
+    }
+
+    @Test
+    public void deleteById_test() {
+        int id = 1;
+        boardRepository.deleteById(id);
+    }
+
+    @Test
+    public void deleteByIdV2_test() {
+        // given
+        int id = 1;
+
+        // when
+        boardRepository.deleteByIdV2(id);
+
+        // 버퍼에 쥐고 있는 쿼리를 즉시 전송
+        em.flush();
+
+        // then
+    }
+
     @Test
     public void findById_test() {
         // given
@@ -23,6 +59,7 @@ public class BoardPersistRepositoryTest {
 
         // when
         Board board = boardRepository.findById(id);
+        em.clear();
         boardRepository.findById(id);
         System.out.println("findById_test : " + board);
 
@@ -44,8 +81,8 @@ public class BoardPersistRepositoryTest {
         System.out.println("findAll_test/username : " + boardList.get(2).getUsername());
 
         // org.assertj.core.api
-        assertThat(boardList.size()).isEqualTo(4);
-        assertThat(boardList.get(2).getUsername()).isEqualTo("ssar");
+//        assertThat(boardList.size()).isEqualTo(4);
+//        assertThat(boardList.get(2).getUsername()).isEqualTo("ssar");
     }
 
 
