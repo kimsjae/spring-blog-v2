@@ -13,6 +13,11 @@ import java.util.List;
 public class BoardRepository {
     private final EntityManager em;
 
+    public Board findById(int id) {
+        Board board = em.find(Board.class, id); // 한 건을 받을 땐 find. 뭐로 받을건지, PK.
+        return board;
+    }
+
 
     public List<Board> findAll() {
         Query query = em.createQuery("select b from Board b order by b.id desc", Board.class);
@@ -29,6 +34,9 @@ public class BoardRepository {
 
 
 
+
+
+
     @Transactional
     public void updateById(String title, String content, String username, Integer id) {
         Query query = em.createNativeQuery("update board_tb set title = ?, content = ?, username = ? where id = ?");
@@ -38,13 +46,6 @@ public class BoardRepository {
         query.setParameter(4, id);
         query.executeUpdate();
     }
-
-    public Board findById(int id) {
-        Query query = em.createNativeQuery("select * from board_tb where id = ?", Board.class);
-        query.setParameter(1, id);
-        return (Board) query.getSingleResult();
-    }
-
 
     @Transactional
     public void deleteById(int id) {
