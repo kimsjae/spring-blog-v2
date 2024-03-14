@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import shop.mtcoding.blog.user.User;
 
 import java.util.List;
@@ -12,6 +13,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardRepository {
     private final EntityManager em;
+
+    @Transactional
+    public Board save(Board board) {
+        em.persist(board); // persist는 프레임워크에 있는 라이브러리기때문에 테스트는 굳이 안 해도 될 것 같다.
+        return board;
+    }
 
     public List<Board> findAllV3(){
         String q1 = "select b from Board b order by b.id desc";
