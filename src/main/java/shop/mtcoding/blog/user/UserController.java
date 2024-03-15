@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import shop.mtcoding.blog.core.errors.exception.Exception401;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,6 +51,11 @@ public class UserController {
     @GetMapping("/user/update-form") // id를 안 들고가도 되는 이유: session에서 찾으면 되니까.
     public String updateForm(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
+
+//        if (sessionUser == null) {
+//            throw new Exception401("인증되지 않았어요. 로그인해주세요");
+//        }
+
         User user = userRepository.findById(sessionUser.getId());
         request.setAttribute("user", user);
         return "user/update-form";
