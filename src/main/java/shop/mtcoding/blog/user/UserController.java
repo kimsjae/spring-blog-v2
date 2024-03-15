@@ -18,6 +18,16 @@ public class UserController {
         return "user/join-form";
     }
 
+    @PostMapping("/join")
+    public String join(UserRequest.JoinDTO reqDTO) {
+        User sessionUser = userRepository.save(reqDTO.toEntity());
+
+        session.setAttribute("sessionUser", sessionUser); // 회원가입과 동시에 로그인
+        return "redirect:/";
+    }
+
+
+
     @GetMapping("/login-form")
     public String loginForm() {
         return "user/login-form";

@@ -30,18 +30,22 @@ public class BoardController {
 
     @GetMapping("/board/{id}/update-form")
     public String updateForm(@PathVariable (name = "id") Integer id, HttpServletRequest request) {
+        Board board = boardRepository.findById(id);
+        request.setAttribute("board", board);
         return "board/update-form";
     }
 
 
     @PostMapping("/board/{id}/update")
-    public String update(@PathVariable(name = "id") Integer id) {
+    public String update(@PathVariable(name = "id") Integer id, BoardRequest.UpdateDTO reqDTO) {
+        boardRepository.updateById(id, reqDTO.getTitle(), reqDTO.getContent());
         return "redirect:/board/" + id;
     }
 
     // Post는 write요청 (action)
     @PostMapping("/board/{id}/delete")
-    public String deleteById(@PathVariable (name = "id") Integer id) {
+    public String delete(@PathVariable Integer id) {
+        boardRepository.deleteById(id);
         return "redirect:/";
     }
 
