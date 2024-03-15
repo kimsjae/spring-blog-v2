@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -46,9 +47,20 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/user/update-form")
-    public String updateForm() {
+    @GetMapping("/user/update-form") // id를 안 들고가도 되는 이유: session에서 찾으면 되니까.
+    public String updateForm(HttpServletRequest request) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        User user = userRepository.findById(sessionUser.getId());
+        request.setAttribute("user", user);
         return "user/update-form";
+    }
+
+    @PostMapping("/user/update")
+    public String update(UserRequest.UpdateDTO reqDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        userRepository.updateById(sessionUser.getId(), reqDTO.getPassword(), reqDTO.getEmail());
+
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
