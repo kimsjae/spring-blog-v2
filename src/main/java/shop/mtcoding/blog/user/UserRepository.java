@@ -13,11 +13,9 @@ public class UserRepository {
     private final EntityManager em;
 
     @Transactional
-    public User updateById(int id, String password, String email) {
+    public User updateById(int id, UserRequest.UpdateDTO reqDTO) {
         User user = findById(id);
-        user.setPassword(password);
-        user.setEmail(email);
-//        user.update(reqDTO);
+        user.update(reqDTO);
         return user;
     }
 
