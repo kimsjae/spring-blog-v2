@@ -1,5 +1,6 @@
 package shop.mtcoding.blog.user;
 
+import jakarta.persistence.NoResultException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import shop.mtcoding.blog.core.errors.exception.Exception400;
 import shop.mtcoding.blog.core.errors.exception.Exception401;
 
 @Controller
@@ -22,9 +24,14 @@ public class UserController {
 
     @PostMapping("/join")
     public String join(UserRequest.JoinDTO reqDTO) {
-        User sessionUser = userRepository.save(reqDTO.toEntity());
+        try {
+            User sessionUser = null;
+            sessionUser = userRepository.save(reqDTO.toEntity());
+            session.setAttribute("sessionUser", sessionUser); // 회원가입과 동시에 로그인
+        } catch (NoResultException e) {
+            throw new Exception400("동일한 유저네임이 존재합니다.");
+        }
 
-        session.setAttribute("sessionUser", sessionUser); // 회원가입과 동시에 로그인
         return "redirect:/";
     }
 
@@ -37,13 +44,18 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(UserRequest.LoginDTO requestDTO) {
-        User sessionUser = userRepository.findByUsernameAndPassword(requestDTO);
+        try {
+            User sessionUser = userRepository.findByUsernameAndPassword(requestDTO);
 
-        if (sessionUser == null) {
-            return "redirect:/login-form";
+            if (sessionUser == null) {
+                return "redirect:/login-form";
+            }
+
+            session.setAttribute("sessionUser", sessionUser);
+        } catch (Exception e) {
+            throw new Exception401("");
         }
-
-        session.setAttribute("sessionUser", sessionUser);
+        
 
         return "redirect:/";
     }
