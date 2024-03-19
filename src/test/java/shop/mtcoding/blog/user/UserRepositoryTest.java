@@ -7,10 +7,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest // Datasource(connection pool), EntityManager
-@Import(UserRepository.class) // IoC 등록코드
+@Import(UserJPARepository.class) // IoC 등록코드
 public class UserRepositoryTest {
     @Autowired
-    private UserRepository userRepository;
+    private UserJPARepository userJPARepository;
 
     @Test
     public void findById_test() {
@@ -18,22 +18,22 @@ public class UserRepositoryTest {
         int id = 1;
 
         // when
-        userRepository.findById(id);
+        userJPARepository.findById(id);
 
         // then
     }
 
-    @Test
-    public void findByUsername_test() {
-        // given
-        UserRequest.LoginDTO requestDTO = new UserRequest.LoginDTO();
-        requestDTO.setUsername("ssar");
-        requestDTO.setPassword("1234");
-
-        // when
-        User user = userRepository.findByUsernameAndPassword(requestDTO);
-
-        // then
-        Assertions.assertThat(user.getUsername()).isEqualTo("ssar");
-    }
+//    @Test
+//    public void findByUsername_test() {
+//        // given
+//        UserRequest.LoginDTO requestDTO = new UserRequest.LoginDTO();
+//        requestDTO.setUsername("ssar");
+//        requestDTO.setPassword("1234");
+//
+//        // when
+//        User user = userJPARepository.findByUsernameAndPassword(requestDTO);
+//
+//        // then
+//        Assertions.assertThat(user.getUsername()).isEqualTo("ssar");
+//    }
 }

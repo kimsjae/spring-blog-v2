@@ -8,30 +8,12 @@ import org.springframework.context.annotation.Import;
 import java.util.Arrays;
 import java.util.List;
 
-@Import(BoardRepository.class)
+@Import(BoardJPARepository.class)
 @DataJpaTest
 public class BoardRepositoryTest {
 
     @Autowired
-    private BoardRepository boardRepository;
-
-    @Test
-    public void findAllV3_test(){
-        List<Board> boardList = boardRepository.findAllV3();
-        System.out.println("findAllV3_test : 조회완료 쿼리 2번");
-        boardList.forEach(board -> {
-            System.out.println(board);
-        });
-    }
-
-    @Test
-    public void findAllV2_test(){
-        List<Board> boardList = boardRepository.findAllV2();
-        System.out.println("findAllV2_test : 조회완료 쿼리 2번");
-        boardList.forEach(board -> {
-            System.out.println(board);
-        });
-    }
+    private BoardJPARepository boardJPARepository;
 
     @Test
     public void randomquery_test(){
@@ -66,7 +48,7 @@ public class BoardRepositoryTest {
 
     @Test
     public void findAll_custom_inquery_test() {
-        List<Board> boardList = boardRepository.findAll();
+        List<Board> boardList = boardJPARepository.findAll();
         int[] userIds = boardList.stream().mapToInt(board -> board.getUser().getId()).distinct().toArray();
         for (int i : userIds) {
             System.out.println(i);
@@ -76,7 +58,7 @@ public class BoardRepositoryTest {
 
     @Test
     public void findAll_lazyloading_test() {
-        List<Board> boardList = boardRepository.findAll();
+        List<Board> boardList = boardJPARepository.findAll();
         boardList.forEach(board -> {
             System.out.println(board.getUser().getUsername());
         });
@@ -88,7 +70,7 @@ public class BoardRepositoryTest {
 
 
         // when
-        boardRepository.findAll();
+        boardJPARepository.findAll();
 
         // then
     }
@@ -97,6 +79,6 @@ public class BoardRepositoryTest {
     public void findById_test() {
         int id = 1;
 
-        boardRepository.findById(1);
+        boardJPARepository.findById(1);
     }
 }

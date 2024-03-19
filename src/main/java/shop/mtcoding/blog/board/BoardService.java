@@ -74,6 +74,8 @@ public class BoardService {
 
         board.setOwner(isOwner);
 
+
+
         return board;
     }
 }
