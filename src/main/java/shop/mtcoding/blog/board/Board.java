@@ -38,7 +38,7 @@ public class Board {
     private List<Reply> replies = new ArrayList<>(); // null이 떠서 터질 수도 있으니까 new해서 초기화해놓는 게 좋다.
 
     @Transient // 테이블 생성이 안됨
-    private boolean isOwner;
+    private boolean isBoardOwner;
 
 
     @Builder
