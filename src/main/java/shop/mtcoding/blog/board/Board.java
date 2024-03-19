@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.core.annotation.Order;
 import shop.mtcoding.blog.reply.Reply;
 import shop.mtcoding.blog.user.User;
 
@@ -32,6 +33,7 @@ public class Board {
     @CreationTimestamp // pc -> db (날짜주입)
     private Timestamp createdAt;
 
+    @OrderBy("id desc")
     // 조회할 때 담는 용도로만 써야 한다. 그래서 테이블에 필드로 만들어지게 하면 안 된다.
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE) // LAZY 디폴트 전략.
     // 포린키의 주인이 누군지 적어줘야 함. Entity 객체의 변수명 == 포린키의 주인
