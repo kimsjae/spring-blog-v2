@@ -33,7 +33,7 @@ public class Board {
     private Timestamp createdAt;
 
     // 조회할 때 담는 용도로만 써야 한다. 그래서 테이블에 필드로 만들어지게 하면 안 된다.
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY) // LAZY 디폴트 전략
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE) // LAZY 디폴트 전략.
     // 포린키의 주인이 누군지 적어줘야 함. Entity 객체의 변수명 == 포린키의 주인
     private List<Reply> replies = new ArrayList<>(); // null이 떠서 터질 수도 있으니까 new해서 초기화해놓는 게 좋다.
 
