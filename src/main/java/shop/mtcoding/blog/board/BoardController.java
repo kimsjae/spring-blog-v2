@@ -23,6 +23,8 @@ public class BoardController {
     private final BoardJPARepository boardJAPRepository;
     private final HttpSession session;
 
+
+
     @PostMapping("/board/save")
     public String save(BoardRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
