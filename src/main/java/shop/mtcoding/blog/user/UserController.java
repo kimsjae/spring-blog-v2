@@ -23,11 +23,11 @@ public class UserController {
     // TODO: 회원정보 조회 API 필요 -> GetMapping("/api/users/{id}")
     @GetMapping("/api/users/{id}")
     public ResponseEntity<?> userinfo(@PathVariable Integer id) {
-        User user = userService.회원조회(id);
-        return ResponseEntity.ok(new ApiUtil(user));
+        UserResponse.DTO respDTO = userService.회원조회(id);
+        return ResponseEntity.ok(new ApiUtil(respDTO));
     }
 
-    @PutMapping("/api/users/{id}}") // id를 쓰는 이유: 세션id로 해도 되지만 그렇게 하면 관리자가 유저들을 수정할 수 없게 되기 때문.
+    @PutMapping("/api/users/{id}") // id를 쓰는 이유: 세션id로 해도 되지만 그렇게 하면 관리자가 유저들을 수정할 수 없게 되기 때문.
     public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody UserRequest.UpdateDTO reqDTO) { // json으로 받아진다.
         User sessionUser = (User) session.getAttribute("sessionUser");
         User newSessionUser = userService.회원수정(sessionUser.getId(), reqDTO);
